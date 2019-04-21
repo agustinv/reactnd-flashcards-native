@@ -15,7 +15,10 @@
     "redux": "^4.0.1"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-cli": "^6.26.0",
+    "babel-preset-expo": "^5.0.0",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.97.0"
   },
   "private": true
 }
