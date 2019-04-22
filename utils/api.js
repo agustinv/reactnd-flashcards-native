@@ -1,7 +1,6 @@
 import { AsyncStorage } from 'react-native'
-import { formatResults } from './_dummy_data'
 
-export const DECKS_STORAGE_KEY = 'udacityProjectFlashcards:decks'
+export const DECKS_STORAGE_KEY = 'udacityProjectFlashcards:decdks'
 
 export function fetchAll () {
   return AsyncStorage.getItem(DECKS_STORAGE_KEY)
@@ -22,4 +21,25 @@ export function removeDeck (key) {
       delete data[key]
       AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
     })
+}
+
+function setDummyData () {
+  let dummyData = {}
+  for (let i = 0; i < 10; i++) {
+    const strTime = Date.now() + i
+    dummyData[strTime] =
+     {
+        name: strTime,
+        cards: {},
+      }
+  }
+
+  AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(dummyData))
+  return dummyData
+}
+
+function formatResults(results) {
+  return results === null
+    ? setDummyData()
+    : JSON.parse(results)
 }
