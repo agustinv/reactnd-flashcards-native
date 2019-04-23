@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { receiveDecks } from '../actions'
-import { orange } from '../utils/colors'
+import { purple } from '../utils/colors'
 import { fetchAll } from '../utils/api'
 import { AppLoading } from 'expo'
 
@@ -20,8 +20,8 @@ class DeckList extends Component {
   }
   renderItem = ({ item }) => (
     <View style={styles.item}>
-      <Text style={[styles.center, styles.heading]}> {item.name} </Text>
-      <Text style={styles.center}> {Object.keys(item.cards).length} cards</Text>
+      <Text style={[styles.center, styles.heading]}> {item.name ? item.name : "No Name"} </Text>
+      <Text style={[styles.center, styles.subheading]}> {Object.keys(item.cards).length} cards</Text>
     </View>
   )
   render() {
@@ -44,11 +44,23 @@ class DeckList extends Component {
 }
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: orange,
-    marginTop: 15,
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    borderColor: purple,
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 5,
   },
   heading: {
-    fontWeight: "700",
+    marginTop:15,
+    fontWeight: "600",
+    marginBottom: 15,
+    fontSize: 22,
+  },
+  subheading: {
+    marginBottom: 15,
   },
   center: {
     textAlign: 'center',

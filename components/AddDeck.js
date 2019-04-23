@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { submitDeck } from '../utils/api'
 import { timeToString } from '../utils/helper'
 import { addDeck } from '../actions'
-import TextButton from './TextButton'
 import { purple, white } from '../utils/colors'
 
 function SubmitBtn ({ onPress }) {
