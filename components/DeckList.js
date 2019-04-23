@@ -19,9 +19,9 @@ class DeckList extends Component {
       .then(() => this.setState(() => ({ ready: true })))
   }
   renderItem = ({ item }) => (
-    <View key={item.key}>
-      <Text> {item.name} </Text>
-      <Text> {Object.keys(item.cards).length} cards</Text>
+    <View style={styles.item}>
+      <Text style={[styles.center, styles.heading]}> {item.name} </Text>
+      <Text style={styles.center}> {Object.keys(item.cards).length} cards</Text>
     </View>
   )
   render() {
@@ -37,6 +37,7 @@ class DeckList extends Component {
       <FlatList
         data={deck_array}
         renderItem={this.renderItem}
+        keyExtractor={(item, index) => index.toString()}
       />
     )
   }
@@ -44,7 +45,14 @@ class DeckList extends Component {
 const styles = StyleSheet.create({
   item: {
     backgroundColor: orange,
-  }
+    marginTop: 15,
+  },
+  heading: {
+    fontWeight: "700",
+  },
+  center: {
+    textAlign: 'center',
+  },
 })
 
 function mapStateToProps (decks) {
