@@ -3,7 +3,6 @@ export function string_parameterize (str1) {
 }
 
 export function timeToString (time = Date.now()) {
-  const date = new Date(time)
-  const todayUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getSeconds()))
-  return todayUTC.toISOString().split('T')[0]
+  return time.toString()
 }
+

@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, TextInput, KeyboardAvoidingView, StyleShe
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { submitDeck } from '../utils/api'
-import { string_parameterize, timeToString } from '../utils/helper'
+import { timeToString } from '../utils/helper'
 import { addDeck } from '../actions'
 import TextButton from './TextButton'
 import { purple, white } from '../utils/colors'
@@ -25,7 +25,7 @@ class AddDeck extends Component {
   }
   submit = () => {
     const deck = this.state
-    const key = string_parameterize(deck.name) + timeToString()
+    const key = timeToString()
 
     this.props.dispatch(addDeck({
       [key]: deck
@@ -38,7 +38,7 @@ class AddDeck extends Component {
     submitDeck({ key, deck })
   }
   toHome = () => {
-    this.props.navigation.dispatch(NavigationActions.back({key: 'AddDeck'}))
+    this.props.navigation.dispatch(NavigationActions.back({key: 'Add Deck'}))
   }
   handleTextChange = (name) => {
     this.setState(() => ({ name: name, cards: {} }))
@@ -48,13 +48,13 @@ class AddDeck extends Component {
 
     return (
       <KeyboardAvoidingView style={styles.container} behavior='padding'>
-        <Text> Deck </Text>
+        <Text style={styles.heading}> What is the title of your new deck? </Text>
         <TextInput
           value={name}
           style={styles.input}
           onChangeText={this.handleTextChange}
           />
-        <SubmitBtn onPress={this.submit} disabled={name === ''}/>
+        <SubmitBtn onPress={this.submit} />
       </KeyboardAvoidingView>
     )
   }
@@ -64,14 +64,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    alignItems: 'center',
     backgroundColor: white
   },
-  row: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
+  heading: {
+    marginTop:40,
+    fontWeight: "600",
+    marginBottom: 20,
+    fontSize: 22,
+    textAlign: 'center',
   },
   input: {
+    width: 200,
+    height: 44,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: purple,
     marginBottom: 20,
   },
   submitBtn: {

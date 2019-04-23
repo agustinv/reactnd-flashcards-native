@@ -38,8 +38,12 @@ function setDummyData () {
   return dummyData
 }
 
+function deleteAllData() {
+  AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify({}))
+  return {}
+}
 function formatResults(results) {
   return results === null
-    ? setDummyData()
+  ? {}
     : JSON.parse(results)
 }
