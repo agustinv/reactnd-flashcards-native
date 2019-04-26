@@ -9,6 +9,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { purple, white } from './utils/colors'
 import DeckList from './components/DeckList'
 import AddDeck from './components/AddDeck'
+import DeckDetail from './components/DeckDetail'
 
 function FlashCardStatusBar ({backgroundColor, ...props}) {
   return (
@@ -57,6 +58,15 @@ const MainNavigator = createAppContainer(createStackNavigator({
     navigationOptions: {
       header: null,
     },
+  },
+  DeckDetail: {
+    screen: DeckDetail,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      },
+    }),
   },
 }));
 

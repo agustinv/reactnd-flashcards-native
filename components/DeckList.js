@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { receiveDecks } from '../actions'
 import { purple } from '../utils/colors'
@@ -18,11 +18,18 @@ class DeckList extends Component {
       .then((decks) => dispatch(receiveDecks(decks)))
       .then(() => this.setState(() => ({ ready: true })))
   }
-  renderItem = ({ item }) => (
-    <View style={styles.item}>
-      <Text style={[styles.center, styles.heading]}> {item.name ? item.name : "No Name"} </Text>
-      <Text style={[styles.center, styles.subheading]}> {Object.keys(item.cards).length} cards</Text>
-    </View>
+  renderItem = ({ item, key }) => (
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => this.props.navigation.navigate(
+        'DeckDetail',
+        { deckId: key }
+      )}
+    >
+      <Text style={styles.heading}> {key ? key : "No key"} </Text>
+      <Text style={styles.heading}> {item.name ? item.name : "No Name"} </Text>
+      <Text style={styles.subheading}> {Object.keys(item.cards).length} cards</Text>
+    </TouchableOpacity>
   )
   render() {
     const { decks } = this.props
@@ -37,7 +44,7 @@ class DeckList extends Component {
       <FlatList
         data={deck_array}
         renderItem={this.renderItem}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => index}
       />
     )
   }
@@ -58,11 +65,10 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 15,
     fontSize: 22,
+    textAlign: 'center',
   },
   subheading: {
     marginBottom: 15,
-  },
-  center: {
     textAlign: 'center',
   },
 })
