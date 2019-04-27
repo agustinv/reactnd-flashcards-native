@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux'
 import { RECEIVE_DECKS, ADD_DECK, REMOVE_DECK } from '../actions'
 
 function decks (state = {}, action) {
@@ -10,7 +11,7 @@ function decks (state = {}, action) {
     case ADD_DECK :
       return {
         ...state,
-        ...action.deck
+        [action.deck.key]: action.deck,
       }
     case REMOVE_DECK :
       return {
@@ -21,4 +22,7 @@ function decks (state = {}, action) {
   }
 }
 
-export default decks
+export default combineReducers({
+  decks,
+})
+

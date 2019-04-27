@@ -19,28 +19,26 @@ function SubmitBtn ({ onPress }) {
 
 class AddDeck extends Component {
   state = {
+    key: null,
     name: '',
-    cards: {},
+    cards: [],
   }
   submit = () => {
     const deck = this.state
-    const key = timeToString()
 
-    this.props.dispatch(addDeck({
-      [key]: deck
-    }))
+    this.props.dispatch(addDeck(deck))
 
-    this.setState(() => ({ name: '', cards: {} }))
+    this.setState(() => ({ name: '', cards: [], key: null }))
 
     this.toHome()
 
-    submitDeck({ key, deck })
+    submitDeck(deck)
   }
   toHome = () => {
     this.props.navigation.dispatch(NavigationActions.back({key: 'Add Deck'}))
   }
   handleTextChange = (name) => {
-    this.setState(() => ({ name: name, cards: {} }))
+    this.setState(() => ({ name: name, key: timeToString() }))
   }
   render() {
     const { name } = this.state

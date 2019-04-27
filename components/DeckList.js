@@ -15,18 +15,18 @@ class DeckList extends Component {
 
     // Fetch all, dispatch, set state to ready
     fetchAll()
-      .then((decks) => dispatch(receiveDecks(decks)))
-      .then(() => this.setState(() => ({ ready: true })))
+    .then((decks) =>  dispatch(receiveDecks(decks)))
+    .then(() => this.setState(() => ({ ready: true })))
   }
-  renderItem = ({ item, key }) => (
+  renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.item}
       onPress={() => this.props.navigation.navigate(
         'DeckDetail',
-        { deckId: key }
+        { key: item.key }
       )}
     >
-      <Text style={styles.heading}> {key ? key : "No key"} </Text>
+      <Text style={styles.heading}> {item.key ? item.key : "No key"} </Text>
       <Text style={styles.heading}> {item.name ? item.name : "No Name"} </Text>
       <Text style={styles.subheading}> {Object.keys(item.cards).length} cards</Text>
     </TouchableOpacity>
@@ -34,7 +34,6 @@ class DeckList extends Component {
   render() {
     const { decks } = this.props
     const { ready } = this.state
-    const deck_array = Object.keys(decks).map((key) => decks[key])
 
     if (ready === false) {
       return <AppLoading />
@@ -42,7 +41,7 @@ class DeckList extends Component {
 
     return (
       <FlatList
-        data={deck_array}
+        data={decks}
         renderItem={this.renderItem}
         keyExtractor={(item, index) => index}
       />
@@ -73,12 +72,14 @@ const styles = StyleSheet.create({
   },
 })
 
-function mapStateToProps (decks) {
+function mapStateToProps ({ decks }) {
+  const deckArray = decks ? Object.keys(decks).map((id) => decks[id]) : []
   return {
-    decks
+    decks: deckArray
   }
 }
 
 export default connect(
   mapStateToProps,
 )(DeckList)
+

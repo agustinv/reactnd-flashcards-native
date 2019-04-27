@@ -8,18 +8,18 @@ import TextButton from './TextButton'
 class DeckDetail extends Component {
   static navigationOptions = ({ navigation }) => {
 
-    const { deckId } = navigation.state.params
-    console.log( deckId)
+    const { key } = navigation.state.params
+
     return {
-      title: `${deckId}`
+      title: `${key}`
     }
   }
   deleteDeck = () => {
-    const { remove, goBack, deckId } = this.props
+    const { remove, goBack, key } = this.props
 
     remove()
     goBack()
-    removeDeck(deckId)
+    removeDeck(key)
   }
   render() {
     const { deck } = this.props
@@ -56,19 +56,20 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps (state, { navigation }) {
-  const { deckId } = navigation.state.params
+  const { key } = navigation.state.params
+  const { decks } = state
+  deckId = Object.keys(state.decks).filter((id) => decks[id].key === key)
   return {
-    deckId,
-    deck: state[deckId],
+    deck: decks[deckId],
   }
 }
 
 function mapDispatchToProps (dispatch, { navigation }) {
-  const { deckId } = navigation.state.params
+  const { key } = navigation.state.params
 
   return {
     remove: () => dispatch(addDeck({
-      [deckId]: null
+      [key]: null
     })),
     goBack: () => navigation.goBack(),
   }
