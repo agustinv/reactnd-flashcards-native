@@ -23,7 +23,7 @@ class DeckList extends Component {
       style={styles.item}
       onPress={() => this.props.navigation.navigate(
         'DeckDetail',
-        { key: item.key }
+        { key: item.key, name: item.name }
       )}
     >
       <Text style={styles.heading}> {item.key ? item.key : "No key"} </Text>
@@ -43,7 +43,7 @@ class DeckList extends Component {
       <FlatList
         data={decks}
         renderItem={this.renderItem}
-        keyExtractor={(item, index) => item.key}
+        keyExtractor={(item, index) => item !== null ? item.key : null}
       />
     )
   }
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 function mapStateToProps ({ decks }) {
   const deckArray = decks ? Object.keys(decks).map((id) => decks[id]) : []
   return {
-    decks: deckArray
+    decks: deckArray.filter((deck) => deck !== null),
   }
 }
 

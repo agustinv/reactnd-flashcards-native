@@ -14,8 +14,10 @@ function decks (state = {}, action) {
         [action.deck.key]: action.deck,
       }
     case REMOVE_DECK :
+      id = Object.keys(state).find((id) => state[id] && state[id].key === action.deck.key)
       return {
         ...state,
+        [id]: null,
       }
     default :
       return state

@@ -16,9 +16,9 @@ export function addDeck (deck) {
   }
 }
 
-export function removeDeck (deck) {
+export function removeDeck (key) {
   return {
     type: REMOVE_DECK,
-    deck,
+    deck: key,
   }
 }

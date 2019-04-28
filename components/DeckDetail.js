@@ -2,27 +2,32 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { white } from '../utils/colors'
-import { removeDeck } from '../utils/api'
+import { deleteDeck } from '../utils/api'
+import { removeDeck } from '../actions'
 import TextButton from './TextButton'
 
 class DeckDetail extends Component {
   static navigationOptions = ({ navigation }) => {
 
-    const { key } = navigation.state.params
+    const { name } = navigation.state.params
 
     return {
-      title: `${key}`
+      title: name
     }
   }
   deleteDeck = () => {
-    const { remove, goBack, key } = this.props
+    const { remove, goBack, deleteDeck } = this.props
 
     remove()
     goBack()
-    removeDeck(key)
+    deleteDeck()
   }
   render() {
     const { deck } = this.props
+
+    if ( deck === undefined) {
+      return <Text></Text>
+    }
 
     return (
       <View style={styles.container}>
@@ -58,7 +63,8 @@ const styles = StyleSheet.create({
 function mapStateToProps (state, { navigation }) {
   const { key } = navigation.state.params
   const { decks } = state
-  deckId = Object.keys(state.decks).filter((id) => decks[id].key === key)
+  deckId = Object.keys(state.decks).filter((id) => decks[id] && decks[id].key === key)
+
   return {
     deck: decks[deckId],
   }
@@ -68,10 +74,11 @@ function mapDispatchToProps (dispatch, { navigation }) {
   const { key } = navigation.state.params
 
   return {
-    remove: () => dispatch(addDeck({
-      [key]: null
+    remove: () => dispatch(removeDeck({
+      key: key,
     })),
     goBack: () => navigation.goBack(),
+    deleteDeck: () => deleteDeck(key),
   }
 }
 

@@ -17,10 +17,10 @@ export function submitDeck (deck) {
     })
 }
 
-export function removeDeck (key) {
+export function deleteDeck (key) {
   return AsyncStorage.getItem(DECKS_STORAGE_KEY)
     .then((results) => {
-      const data = JSON.parse(results).reject((item) => item.key === key)
+      const data = JSON.parse(results).filter((item) => item.key !== key)
       AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
     })
 }
