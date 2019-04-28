@@ -28,7 +28,7 @@ export function removeDeck (key) {
 function setDummyData () {
   let dummyData = []
   for (let i = 0; i < 10; i++) {
-    const strTime = Date.now() + i
+    const strTime = (Date.now() + i).toString()
     dummyData.push(
       {
         key: strTime,
@@ -46,8 +46,7 @@ function deleteAllData() {
   return []
 }
 function formatResults(results) {
-  //console.log('results')
-  //console.log(results)
+  // console.log(results)
   return results === null
   ? []
     : JSON.parse(results)
