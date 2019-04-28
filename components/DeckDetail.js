@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { white } from '../utils/colors'
+import { white, gray } from '../utils/colors'
 import { deleteDeck } from '../utils/api'
 import { removeDeck } from '../actions'
 import TextButton from './TextButton'
@@ -33,6 +33,15 @@ class DeckDetail extends Component {
       <View style={styles.container}>
         <Text style={styles.heading}> {deck.name ? deck.name : "No Name"} </Text>
         <Text style={styles.subheading}> {Object.keys(deck.cards).length} cards</Text>
+        <TouchableOpacity
+          style={styles.addCardBtn}
+          onPress={() => this.props.navigation.navigate(
+            'AddCard',
+            { key: deck.key }
+          )}
+        >
+          <Text style={styles.addCardBtnText}>Add Card</Text>
+        </TouchableOpacity>
         <TextButton style={{margin: 20}} onPress={this.deleteDeck}>
           Delete Deck
         </TextButton>
@@ -56,6 +65,20 @@ const styles = StyleSheet.create({
   },
   subheading: {
     marginBottom: 15,
+    textAlign: 'center',
+  },
+  addCardBtn: {
+    marginTop:85,
+    backgroundColor: gray,
+    padding: 10,
+    borderRadius: 7,
+    height: 45,
+    marginLeft: 40,
+    marginRight: 40,
+  },
+  addCardBtnText: {
+    color: white,
+    fontSize: 22,
     textAlign: 'center',
   },
 })

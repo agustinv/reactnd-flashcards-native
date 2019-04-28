@@ -10,6 +10,7 @@ import { purple, white } from './utils/colors'
 import DeckList from './components/DeckList'
 import AddDeck from './components/AddDeck'
 import DeckDetail from './components/DeckDetail'
+import AddCard from './components/AddCard'
 
 function FlashCardStatusBar ({backgroundColor, ...props}) {
   return (
@@ -61,6 +62,15 @@ const MainNavigator = createAppContainer(createStackNavigator({
   },
   DeckDetail: {
     screen: DeckDetail,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      },
+    }),
+  },
+  AddCard: {
+    screen: AddCard,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: white,
       headerStyle: {
