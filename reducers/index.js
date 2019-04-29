@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { RECEIVE_DECKS, ADD_DECK, REMOVE_DECK } from '../actions'
+import { RECEIVE_DECKS, ADD_DECK, ADD_CARD, REMOVE_DECK } from '../actions'
 
 function decks (state = {}, action) {
   switch (action.type) {
@@ -13,11 +13,20 @@ function decks (state = {}, action) {
         ...state,
         [action.deck.key]: action.deck,
       }
-    case REMOVE_DECK :
-      id = Object.keys(state).find((id) => state[id] && state[id].key === action.deck.key)
+    case ADD_CARD :
+      const did = Object.keys(state).find((id) => state[id] && state[id].key === action.deck.key)
       return {
         ...state,
-        [id]: null,
+        [did]: {
+                ...state[did],
+                cards: state[did].cards.concat(action.card),
+        },
+      }
+    case REMOVE_DECK :
+      const deckId = Object.keys(state).find((id) => state[id] && state[id].key === action.deck.key)
+      return {
+        ...state,
+        [deckId]: null,
       }
     default :
       return state

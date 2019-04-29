@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, TextInput, KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { submitDeck } from '../utils/api'
-import { addDeck } from '../actions'
+import { submitCard } from '../utils/api'
+import { addCard } from '../actions'
 import { purple, white } from '../utils/colors'
 
 function SubmitBtn ({ onPress }) {
@@ -26,10 +26,11 @@ class AddCard extends Component {
     answer: '',
   }
   submit = () => {
-    const { deckKey, goBack, dispatch } = this.props
-    //dispatch(addCard(deckKey, card)
+    const { deckKey, goBack, dispatchAddCard } = this.props
+    const card = this.state
+    dispatchAddCard({key: deckKey}, card)
     goBack()
-    //submitCard(key, card)
+    submitCard(deckKey, card)
   }
   handleQuestionChange = (question) => {
     this.setState(() => ({ question: question }))
@@ -45,13 +46,13 @@ class AddCard extends Component {
         <TextInput
           value={question}
           style={styles.input}
-          placeholder="enter question"
+          placeholder="question"
           onChangeText={this.handleQuestionChange}
           />
         <TextInput
           value={answer}
           style={styles.input}
-          placeholder="enter answer"
+          placeholder="answer"
           onChangeText={this.handleAnswerChange}
           />
         <SubmitBtn onPress={this.submit} />
@@ -115,6 +116,7 @@ function mapStateToProps (state, { navigation }) {
 function mapDispatchToProps (dispatch, { navigation }) {
   return {
     goBack: () => navigation.goBack(),
+    dispatchAddCard: (deck, card) => dispatch(addCard(deck, card)),
   }
 }
 

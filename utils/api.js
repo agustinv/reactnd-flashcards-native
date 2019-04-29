@@ -12,7 +12,17 @@ export function submitDeck (deck) {
   return AsyncStorage.getItem(DECKS_STORAGE_KEY)
     .then((results) => {
       const data = JSON.parse(results)
-      data.push(deck)
+      data.concat(deck)
+      AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
+    })
+}
+
+export function submitCard(key, card) {
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY)
+    .then((results) => {
+      const data = JSON.parse(results)
+      let deck = data.find((deck) => deck.key === key)
+      deck.cards.push(card)
       AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
     })
 }
