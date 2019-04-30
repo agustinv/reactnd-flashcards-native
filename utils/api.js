@@ -12,7 +12,7 @@ export function submitDeck (deck) {
   return AsyncStorage.getItem(DECKS_STORAGE_KEY)
     .then((results) => {
       const data = JSON.parse(results)
-      data.concat(deck)
+      data.push(deck)
       AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
     })
 }
