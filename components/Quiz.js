@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, TextInput, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { purple, white, red, blue, gray } from '../utils/colors'
-import { shuffleArray } from '../utils/helper'
+import { shuffleArray, clearLocalNotification, setLocalNotification } from '../utils/helper'
 
 function ShowAnswerBtn ({ onPress }) {
   return (
@@ -68,6 +68,15 @@ class Quiz extends Component {
   }
   startOver = () => {
     this.setState(() => ({ correct: 0, showAnswer: false, index: 0 }))
+
+    clearLocalNotification()
+      .then(setLocalNotification)
+  }
+  doneWithQuiz = () => {
+    const { goBack } = this.props
+    goBack()
+    clearLocalNotification()
+      .then(setLocalNotification)
   }
   showAnswer = () => {
     this.setState(() => ({ showAnswer: true }))
@@ -81,7 +90,7 @@ class Quiz extends Component {
     this.setState(() => ({ showAnswer: false, index: index + 1 }))
   }
   render() {
-    const { cards, goBack } = this.props
+    const { cards } = this.props
     const { index, showAnswer, correct } = this.state
     const remaining = cards.length - index - 1
     const perfectScore = cards.length === correct
@@ -100,7 +109,7 @@ class Quiz extends Component {
             <Text style={[styles.heading, styles.extraPaddingTop]}> Your Score is: {correct} / {cards.length}</Text>
           }
           <View style={[styles.row, styles.extraPaddingTop]}>
-            <DoneBtn onPress={goBack} />
+            <DoneBtn onPress={this.doneWithQuiz} />
             <StartOverBtn onPress={this.startOver} />
           </View>
         </View>
