@@ -83,6 +83,8 @@ class Quiz extends Component {
   render() {
     const { cards, goBack } = this.props
     const { index, showAnswer, correct } = this.state
+    const remaining = cards.length - index - 1
+    const perfectScore = cards.length === correct
 
     if (cards.length === 0) {
       return <Text style={[styles.heading, styles.extraPaddingTop]}> Sorry you cannot take a quiz yet because there are no cards in deck </Text>
@@ -91,9 +93,13 @@ class Quiz extends Component {
     if (cards.length === index) {
       return (
         <View style={styles.container} behavior='padding'>
-          <Text style={[styles.heading, styles.extraPaddingTop]}> You've answered correctly: {correct} out of {cards.length}! </Text>
+          { perfectScore &&
+            <Text style={[styles.heading, styles.extraPaddingTop]}> Congratulations, you answered all {correct} questions correctly! </Text>
+          }
+          { !perfectScore &&
+            <Text style={[styles.heading, styles.extraPaddingTop]}> Your Score is: {correct} / {cards.length}</Text>
+          }
           <View style={[styles.row, styles.extraPaddingTop]}>
-
             <DoneBtn onPress={goBack} />
             <StartOverBtn onPress={this.startOver} />
           </View>
@@ -104,6 +110,7 @@ class Quiz extends Component {
     const { question, answer } = cards[index]
     return (
       <View style={styles.container} behavior='padding'>
+        <Text style={[styles.smallerText]}>({remaining} question(s) remaining)</Text>
         <Text style={[styles.heading, styles.extraPaddingTop]}>Question:</Text>
         <Text style={styles.heading}>{question}</Text>
         { !showAnswer &&
@@ -139,6 +146,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 20,
     fontSize: 22,
+    textAlign: 'center',
+  },
+  smallerText: {
+    fontWeight: "600",
+    fontSize: 10,
     textAlign: 'center',
   },
   extraPaddingTop: {
