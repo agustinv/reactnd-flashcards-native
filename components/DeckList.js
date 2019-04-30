@@ -26,7 +26,6 @@ class DeckList extends Component {
         { key: item.key, name: item.name }
       )}
     >
-      <Text style={styles.heading}> {item.key ? item.key : "No key"} </Text>
       <Text style={styles.heading}> {item.name ? item.name : "No Name"} </Text>
       <Text style={styles.subheading}> {Object.keys(item.cards).length} cards</Text>
     </TouchableOpacity>
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     borderColor: purple,
     padding: 10,
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 5,
   },
   heading: {

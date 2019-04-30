@@ -48,7 +48,7 @@ class DeckDetail extends Component {
           style={styles.quizBtn}
           onPress={() => this.props.navigation.navigate(
             'Quiz',
-            { key: deck.key, name: deck.name }
+            { deck: deck }
           )}
         >
           <Text style={styles.quizBtnText}>Start Quiz</Text>
@@ -109,10 +109,9 @@ const styles = StyleSheet.create({
   },
 })
 
-function mapStateToProps (state, { navigation }) {
+function mapStateToProps ({ decks }, { navigation }) {
   const { key } = navigation.state.params
-  const { decks } = state
-  deckId = Object.keys(state.decks).filter((id) => decks[id] && decks[id].key === key)
+  deckId = Object.keys(decks).filter((id) => decks[id] && decks[id].key === key)
 
   return {
     deck: decks[deckId],

@@ -2,38 +2,51 @@ import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, TextInput, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { purple, white } from '../utils/colors'
+import { shuffleArray } from '../utils/helper'
 
-function SubmitBtn ({ onPress }) {
+function ShowAnswerBtn ({ onPress }) {
   return (
     <TouchableOpacity
-      style={styles.submitBtn}
+      style={[styles.btn, styles.extraPaddingTop]}
       onPress={onPress}>
-        <Text style={styles.submitBtnText}>Submit</Text>
+        <Text style={styles.btnText}>Show Answer</Text>
     </TouchableOpacity>
   )
 }
 
 class Quiz extends Component {
   static navigationOptions = ({ navigation }) => {
-    const { name } = navigation.state.params
-
     return {
-      title: `Quiz for ${name}`
+      title: "Quiz"
     }
   }
   state = {
-   correct: 0,
+    correct: 0,
+    showAnswer: false,
+    index: 0,
   }
-  submit = () => {
-
+  showAnswer = () => {
+    this.setState(() => ({ showAnswer: true }))
   }
   render() {
-    const { question, answer } = this.state
+    const { cards } = this.props
+    const { index, showAnswer } = this.state
 
+    if (cards.length === 0) {
+      return <Text style={styles.heading}> Sorry you cannot take a quiz yet because there are no cards in deck </Text>
+    }
+
+    const { question, answer } = cards[index]
     return (
       <View style={styles.container} behavior='padding'>
-        <Text style={styles.heading}> Quiz here</Text>
-        <SubmitBtn onPress={this.submit} />
+        <Text style={[styles.heading, styles.extraPaddingTop]}>Question:</Text>
+        <Text style={styles.heading}>{question}</Text>
+        { !showAnswer &&
+          <ShowAnswerBtn onPress={this.showAnswer} />
+        }
+        { showAnswer &&
+          <Text style={[styles.heading, styles.extraPaddingTop]}>Answer: {answer}</Text>
+        }
       </View>
     )
   }
@@ -47,13 +60,15 @@ const styles = StyleSheet.create({
     backgroundColor: white
   },
   heading: {
-    marginTop:40,
     fontWeight: "600",
     marginBottom: 20,
     fontSize: 22,
     textAlign: 'center',
   },
-  submitBtn: {
+  extraPaddingTop: {
+    marginTop: 40,
+  },
+  btn: {
     backgroundColor: purple,
     padding: 10,
     borderRadius: 7,
@@ -61,7 +76,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginRight: 40,
   },
-  submitBtnText: {
+  btnText: {
     color: white,
     fontSize: 22,
     textAlign: 'center',
@@ -75,11 +90,11 @@ const styles = StyleSheet.create({
   },
 })
 
-function mapStateToProps (state, { navigation }) {
-  const { key } = navigation.state.params
-
+function mapStateToProps ({ decks }, { navigation }) {
+  const { deck } = navigation.state.params
+  const cards = shuffleArray(deck.cards)
   return {
-    deckKey: key,
+    cards: cards,
   }
 }
 
