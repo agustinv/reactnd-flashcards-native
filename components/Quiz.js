@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, TextInput, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { purple, white } from '../utils/colors'
+import { purple, white, red, blue } from '../utils/colors'
 import { shuffleArray } from '../utils/helper'
 
 function ShowAnswerBtn ({ onPress }) {
@@ -10,6 +10,26 @@ function ShowAnswerBtn ({ onPress }) {
       style={[styles.btn, styles.extraPaddingTop]}
       onPress={onPress}>
         <Text style={styles.btnText}>Show Answer</Text>
+    </TouchableOpacity>
+  )
+}
+
+function CorrectAnswerBtn ({ onPress }) {
+  return (
+    <TouchableOpacity
+      style={[styles.btn, styles.btnBlue]}
+      onPress={onPress}>
+        <Text style={styles.btnText}>Correct</Text>
+    </TouchableOpacity>
+  )
+}
+
+function IncorrectAnswerBtn ({ onPress }) {
+  return (
+    <TouchableOpacity
+      style={[styles.btn, styles.btnRed]}
+      onPress={onPress}>
+        <Text style={styles.btnText}>Incorrect</Text>
     </TouchableOpacity>
   )
 }
@@ -28,12 +48,24 @@ class Quiz extends Component {
   showAnswer = () => {
     this.setState(() => ({ showAnswer: true }))
   }
+  markCorrect = () => {
+    const { index, showAnswer, correct } = this.state
+    this.setState(() => ({ showAnswer: false, index: index + 1, correct: correct + 1}))
+  }
+  markIncorrect = () => {
+    const { index, showAnswer } = this.state
+    this.setState(() => ({ showAnswer: false, index: index + 1}))
+  }
   render() {
     const { cards } = this.props
-    const { index, showAnswer } = this.state
+    const { index, showAnswer, correct } = this.state
 
     if (cards.length === 0) {
-      return <Text style={styles.heading}> Sorry you cannot take a quiz yet because there are no cards in deck </Text>
+      return <Text style={[styles.heading, styles.extraPaddingTop]}> Sorry you cannot take a quiz yet because there are no cards in deck </Text>
+    }
+
+    if (cards.length === index) {
+      return <Text style={[styles.heading, styles.extraPaddingTop]}> You've answered correctly: {correct} out of {cards.length}! </Text>
     }
 
     const { question, answer } = cards[index]
@@ -47,6 +79,12 @@ class Quiz extends Component {
         { showAnswer &&
           <Text style={[styles.heading, styles.extraPaddingTop]}>Answer: {answer}</Text>
         }
+        { showAnswer &&
+          <View style={[styles.row, styles.extraPaddingTop]}>
+            <IncorrectAnswerBtn onPress={this.markIncorrect} />
+            <CorrectAnswerBtn onPress={this.markCorrect} />
+          </View>
+        }
       </View>
     )
   }
@@ -58,6 +96,11 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     backgroundColor: white
+  },
+  row: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-around',
   },
   heading: {
     fontWeight: "600",
@@ -75,6 +118,12 @@ const styles = StyleSheet.create({
     height: 45,
     marginLeft: 40,
     marginRight: 40,
+  },
+  btnRed: {
+    backgroundColor: red,
+  },
+  btnBlue: {
+    backgroundColor: blue,
   },
   btnText: {
     color: white,
