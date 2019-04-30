@@ -11,6 +11,7 @@ import DeckList from './components/DeckList'
 import AddDeck from './components/AddDeck'
 import DeckDetail from './components/DeckDetail'
 import AddCard from './components/AddCard'
+import Quiz from './components/Quiz'
 
 function FlashCardStatusBar ({backgroundColor, ...props}) {
   return (
@@ -71,6 +72,15 @@ const MainNavigator = createAppContainer(createStackNavigator({
   },
   AddCard: {
     screen: AddCard,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      },
+    }),
+  },
+  Quiz: {
+    screen: Quiz,
     navigationOptions: ({ navigation }) => ({
       headerTintColor: white,
       headerStyle: {

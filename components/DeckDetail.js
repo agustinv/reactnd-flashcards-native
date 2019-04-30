@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { white, gray } from '../utils/colors'
+import { white, gray, purple } from '../utils/colors'
 import { deleteDeck } from '../utils/api'
 import { removeDeck } from '../actions'
 import TextButton from './TextButton'
@@ -33,6 +33,7 @@ class DeckDetail extends Component {
       <View style={styles.container}>
         <Text style={styles.heading}> {deck.name ? deck.name : "No Name"} </Text>
         <Text style={styles.subheading}> {Object.keys(deck.cards).length} cards</Text>
+
         <TouchableOpacity
           style={styles.addCardBtn}
           onPress={() => this.props.navigation.navigate(
@@ -40,8 +41,19 @@ class DeckDetail extends Component {
             { key: deck.key }
           )}
         >
-          <Text style={styles.addCardBtnText}>Add Card</Text>
+          <Text style={styles.quizBtnText}>Add Card</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.quizBtn}
+          onPress={() => this.props.navigation.navigate(
+            'Quiz',
+            { key: deck.key, name: deck.name }
+          )}
+        >
+          <Text style={styles.quizBtnText}>Start Quiz</Text>
+        </TouchableOpacity>
+
         <TextButton style={{margin: 20}} onPress={this.deleteDeck}>
           Delete Deck
         </TextButton>
@@ -77,6 +89,20 @@ const styles = StyleSheet.create({
     marginRight: 40,
   },
   addCardBtnText: {
+    color: white,
+    fontSize: 22,
+    textAlign: 'center',
+  },
+  quizBtn: {
+    marginTop: 15,
+    backgroundColor: purple,
+    padding: 10,
+    borderRadius: 7,
+    height: 45,
+    marginLeft: 40,
+    marginRight: 40,
+  },
+  quizBtnText: {
     color: white,
     fontSize: 22,
     textAlign: 'center',
