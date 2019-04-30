@@ -30,12 +30,12 @@ class AddDeck extends Component {
 
     this.setState(() => ({ name: '', cards: [], key: null }))
 
-    this.toHome()
+    this.toDetailView(deck)
 
     submitDeck(deck)
   }
-  toHome = () => {
-    this.props.navigation.dispatch(NavigationActions.back({key: 'Add Deck'}))
+  toDetailView = (deck) => {
+    this.props.navigation.dispatch(NavigationActions.navigate({routeName: 'DeckDetail', params: { key: deck.key, name: deck.name }}))
   }
   handleTextChange = (name) => {
     this.setState(() => ({ name: name, key: timeToString() }))
