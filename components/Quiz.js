@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, TextInput, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { purple, white, red, blue } from '../utils/colors'
+import { purple, white, red, blue, gray } from '../utils/colors'
 import { shuffleArray } from '../utils/helper'
 
 function ShowAnswerBtn ({ onPress }) {
@@ -17,7 +17,7 @@ function ShowAnswerBtn ({ onPress }) {
 function CorrectAnswerBtn ({ onPress }) {
   return (
     <TouchableOpacity
-      style={[styles.btn, styles.btnBlue]}
+      style={[styles.btn]}
       onPress={onPress}>
         <Text style={styles.btnText}>Correct</Text>
     </TouchableOpacity>
@@ -34,6 +34,27 @@ function IncorrectAnswerBtn ({ onPress }) {
   )
 }
 
+function DoneBtn ({ onPress }) {
+  return (
+    <TouchableOpacity
+      style={[styles.btn, styles.btnGray]}
+      onPress={onPress}>
+        <Text style={styles.btnText}>Im, done! Go Back</Text>
+    </TouchableOpacity>
+  )
+}
+
+function StartOverBtn ({ onPress }) {
+  return (
+    <TouchableOpacity
+      style={styles.btn}
+      onPress={onPress}>
+        <Text style={styles.btnText}>Start Over</Text>
+    </TouchableOpacity>
+  )
+}
+
+
 class Quiz extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -45,19 +66,22 @@ class Quiz extends Component {
     showAnswer: false,
     index: 0,
   }
+  startOver = () => {
+    this.setState(() => ({ correct: 0, showAnswer: false, index: 0 }))
+  }
   showAnswer = () => {
     this.setState(() => ({ showAnswer: true }))
   }
   markCorrect = () => {
     const { index, showAnswer, correct } = this.state
-    this.setState(() => ({ showAnswer: false, index: index + 1, correct: correct + 1}))
+    this.setState(() => ({ showAnswer: false, index: index + 1, correct: correct + 1 }))
   }
   markIncorrect = () => {
     const { index, showAnswer } = this.state
-    this.setState(() => ({ showAnswer: false, index: index + 1}))
+    this.setState(() => ({ showAnswer: false, index: index + 1 }))
   }
   render() {
-    const { cards } = this.props
+    const { cards, goBack } = this.props
     const { index, showAnswer, correct } = this.state
 
     if (cards.length === 0) {
@@ -65,7 +89,16 @@ class Quiz extends Component {
     }
 
     if (cards.length === index) {
-      return <Text style={[styles.heading, styles.extraPaddingTop]}> You've answered correctly: {correct} out of {cards.length}! </Text>
+      return (
+        <View style={styles.container} behavior='padding'>
+          <Text style={[styles.heading, styles.extraPaddingTop]}> You've answered correctly: {correct} out of {cards.length}! </Text>
+          <View style={[styles.row, styles.extraPaddingTop]}>
+
+            <DoneBtn onPress={goBack} />
+            <StartOverBtn onPress={this.startOver} />
+          </View>
+        </View>
+      )
     }
 
     const { question, answer } = cards[index]
@@ -118,6 +151,9 @@ const styles = StyleSheet.create({
     height: 45,
     marginLeft: 40,
     marginRight: 40,
+  },
+  btnGray: {
+    backgroundColor: gray,
   },
   btnRed: {
     backgroundColor: red,
