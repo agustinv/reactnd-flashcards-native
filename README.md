@@ -16,3 +16,4 @@ Udacity Nanodegree Flashcards Project
 * install all project dependencies with `yarn install`
 * start the local server with `expo start`
 * this will start a browser window at http://localhost:19002/, and click on "Run Ios simulator" to run on Xcode simulator (might have to launch that first) or click on "send link w email" to ran application on expo on your iphone
+* have fun!
